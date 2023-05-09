@@ -23,10 +23,10 @@ module.exports = {
       identificacion: {
         type: Sequelize.STRING,
       },
-      id_profesor: {
+      id_usuario: {
         type: Sequelize.INTEGER,
         references: {
-          model: "Profesores",
+          model: "Usuarios",
           key: "id",
         },
         onDelete: "CASCADE",

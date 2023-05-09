@@ -1,6 +1,7 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../database/database.js";
 import { AlumnoCursos } from "./AlumnoCursos.js";
+import { Usuarios } from "./Usuarios.js";
 export const Alumnos = sequelize.define("Alumnos", {
   id: {
     allowNull: false,
@@ -23,10 +24,10 @@ export const Alumnos = sequelize.define("Alumnos", {
   identificacion: {
     type: DataTypes.STRING,
   },
-  id_profesor: {
+  id_usuario: {
     type: DataTypes.INTEGER,
     references: {
-      model: "Profesores",
+      model: "Usuarios",
       key: "id",
     },
     onDelete: "CASCADE",
@@ -46,6 +47,8 @@ AlumnoCursos.belongsTo(Alumnos, {
   foreignKey: "id_alumno",
   targetKey: "id",
 });
+Usuarios.hasOne(Alumnos, { foreignKey: "id_usuario", sourceKey: "id" });
+Alumnos.belongsTo(Usuarios, { foreignKey: "id_usuario", targetKey: "id" });
 // const { Model } = require("sequelize");
 // module.exports = (sequelize, DataTypes) => {
 //   class Alumnos extends Model {

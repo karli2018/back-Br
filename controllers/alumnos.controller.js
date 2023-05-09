@@ -1,6 +1,8 @@
 import { AlumnoCursos } from "../models/AlumnoCursos.js";
 import { Alumnos } from "../models/Alumnos.js";
 import { Cursos } from "../models/Cursos.js";
+import { Usuarios } from "../models/Usuarios.js";
+import bycript from "bcrypt";
 export const getAlumnos = async (req, resp) => {
   try {
     const alumnos = await Alumnos.findAll({
@@ -21,15 +23,21 @@ export const getAlumnos = async (req, resp) => {
 export const getAlumno = async (req, resp) => {
   try {
     const { id } = req.params;
+    console.log(id, 'getAlumno');
     const alumno = await Alumnos.findOne({
       where: { id },
-      include: {
+      include: [{
         model: AlumnoCursos,
 
         attributes: ["id"],
 
         include: { model: Cursos },
+
       },
+      {
+        model: Usuarios
+      }
+    ]
     });
     resp.json(alumno);
   } catch (error) {
@@ -38,15 +46,31 @@ export const getAlumno = async (req, resp) => {
 };
 export const createAlumno = async (req, resp) => {
   try {
-    const { fname, sname, flastname, slastname, identificacion, profe } =
+
+    const { fname, sname, flastname, slastname, identificacion, correo, usuario, contrasena } =
       req.body;
+    let newUsuario = null;
+    const saltRounds = 10;
+
+    if (correo && usuario && contrasena)
+    {
+    const passHash = await bycript.hash(contrasena, saltRounds);
+      newUsuario = await Usuarios.create({
+        usuario,
+        contrasena: passHash,
+        email: correo,
+        nombre: `${fname} ${flastname}`,
+        idCuenta: 2,
+      });
+    }
+    console.log(newUsuario);
     const newAlumno = await Alumnos.create({
       primer_Nombre: fname,
       segundo_Nombre: sname,
       primer_Apellido: flastname,
       segundo_Apellido: slastname,
       identificacion: identificacion,
-      id_profesor: profe,
+      id_usuario: newUsuario?newUsuario.id:null,
     });
     resp.json(newAlumno);
   } catch (error) {
@@ -57,23 +81,45 @@ export const createAlumno = async (req, resp) => {
 export const updateAlumno = async (req, resp) => {
   try {
     const { id } = req.params;
-    const { fname, sname, flastname, slastname, identificacion, id_profesor } =
+    const { fname, sname, flastname, slastname, identificacion,idUser, correo, usuario, contrasena } =
       req.body;
+      let newUsuario = null;
+      const saltRounds = 10;
+      newUsuario = idUser ? await Usuarios.findOne({where: {id: idUser}}):null;
+      if(!newUsuario && correo && contrasena && usuario) {        
+          const passHash = await bycript.hash(contrasena, saltRounds);
+          newUsuario = await Usuarios.create({
+          usuario,
+          email: correo,
+          nombre: `${fname} ${flastname}`,
+          contrasena: passHash,
+          idCuenta: 2
+          },
+          
+          
+        );}
     const newAlumno = {
       primer_Nombre: fname,
       segundo_Nombre: sname,
       primer_Apellido: flastname,
       segundo_Apellido: slastname,
       identificacion: identificacion,
-      id_profesor,
+      id_usuario: newUsuario?newUsuario.id:null,
     };
-
+    let resultUs = null;
+    if(newUsuario) {    
+      const passHash = await bycript.hash(contrasena, saltRounds);
+        resultUs = await Usuarios.update(
+        { email: correo, usuario, contrasena: contrasena?passHash:newUsuario.contrasena},
+        { where: {id: newUsuario.id}}
+      );
+    }
     const result = await Alumnos.update(
       { ...newAlumno },
 
       { where: { id } }
     );
-    resp.send(result);
+    resp.send({...result, usuario: resultUs});
   } catch (error) {
     return resp.status(500).json({ message: error.message });
   }

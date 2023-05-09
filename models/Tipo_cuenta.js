@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../database/database.js";
-import { Profesores } from "./Profesores.js";
+import { Usuarios } from "./Usuarios.js";
 
 export const Tipo_cuenta = sequelize.define("Tipo_cuenta", {
   id: {
@@ -21,11 +21,11 @@ export const Tipo_cuenta = sequelize.define("Tipo_cuenta", {
     type: DataTypes.DATE,
   },
 });
-Tipo_cuenta.hasMany(Profesores, {
+Tipo_cuenta.hasMany(Usuarios, {
   foreignKey: "idCuenta",
   sourceKey: "id",
 });
-Profesores.belongsTo(Tipo_cuenta, {
+Usuarios.belongsTo(Tipo_cuenta, {
   foreignKey: "idCuenta",
   targetKey: "id",
 });
@@ -39,7 +39,7 @@ Profesores.belongsTo(Tipo_cuenta, {
 //      */
 //     static associate(models) {
 //       // define association here
-//       Tipo_cuenta.hasMany(models.Profesores, {
+//       Tipo_cuenta.hasMany(models.Usuarios, {
 //         foreignKey: "idCuenta",
 //       });
 //     }

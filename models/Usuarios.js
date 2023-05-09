@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../database/database.js";
 
-export const Profesores = sequelize.define("Profesores", {
+export const Usuarios = sequelize.define("Usuarios", {
   id: {
     allowNull: false,
     autoIncrement: true,
