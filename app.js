@@ -6,7 +6,7 @@ import logger from "morgan";
 import cors from "cors";
 import alumnosRoutes from "./routes/alumnos.routes.js";
 import cursosRoutes from "./routes/cursos.routes.js";
-import profesoresRoutes from "./routes/profesores.routes.js";
+import profesoresRoutes from "./routes/usuarios.routes.js";
 import tipoCuentaRoutes from "./routes/tipoCuenta.routes.js";
 import alumnosCursosRoutes from "./routes/alumnoCursos.routes.js";
 
@@ -17,10 +17,7 @@ var app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
-  cors({
-    origin: "https://colegicundi.herokuapp.com",
-    optionsSuccessStatus: 200,
-  })
+  cors()
 );
 var allowlist = ["http://example1.com", "http://example2.com"];
 var corsOptionsDelegate = function (req, callback) {
@@ -39,5 +36,8 @@ app.use(alumnosRoutes);
 app.use(cursosRoutes);
 app.use(tipoCuentaRoutes);
 // catch 404 and forward to error handler
+
+//Settings
+// app.set('port', process.env.PORT || 5000);
 
 export default app;
