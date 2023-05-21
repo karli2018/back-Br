@@ -1,23 +1,23 @@
 {
   "development": {
-    "username": "root",
+    "username": "Bris4s",
     "password": null,
-    "database": "Administrador_Cursos",
+    "database": "colegiobr",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "mssql"
   },
   "test": {
-    "username": "root",
+    "username": "Bris4s",
     "password": null,
-    "database": "Administrador_Cursos",
+    "database": "colegiobr",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "mssql"
   },
   "production": {
-    "username": "root",
+    "username": "Bris4s",
     "password": null,
-    "database": "Administrador_Cursos",
+    "database": "colegiobr",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "mssql"
   }
 }
