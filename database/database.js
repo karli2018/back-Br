@@ -1,14 +1,8 @@
 import Sequelize from "sequelize";
 
-// export const sequelize = new Sequelize("pruebabr","root","1234", {
-//   // host: process.env.MYSQLHOST,
-//   host: "localhost",
-//   dialect: "mysql",
-// });
-
-export const sequelize = new Sequelize('colegiobr', 'Bris4s', 'Prueb4sl', {
+export const sequelize = new Sequelize('colegiobr', 'gabyadmin', '26041994Layco', {
   dialect: 'mssql',
-  host: 'localhost'
+  host: 'colegiobr.database.windows.net'
   }
 );
 
